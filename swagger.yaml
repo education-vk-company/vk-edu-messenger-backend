@@ -1,0 +1,750 @@
+swagger: '2.0'
+info:
+  title: Messenger
+  description: Messenger Swagger
+  termsOfService: https: //example.com/terms/
+  contact:
+    email: contact@example.com
+  license:
+    name: MIT License
+  version: v1
+host: 127.0.0.1: 8000
+schemes:
+- http
+basePath: /api
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /auth/:
+    post:
+      operationId: auth_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenObtainPair'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenObtainPair'
+      tags:
+      - auth
+    parameters: []
+  /auth/refresh/:
+    post:
+      operationId: auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenRefresh'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenRefresh'
+      tags:
+      - auth
+    parameters: []
+  /centrifugo/connect/:
+    post:
+      operationId: centrifugo_connect_create
+      description: ''
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+      - centrifugo
+    parameters: []
+  /centrifugo/subscribe/:
+    post:
+      operationId: centrifugo_subscribe_create
+      description: ''
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+      - centrifugo
+    parameters: []
+  /chat/{id
+}/:
+    get:
+      operationId: chat_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Chat'
+      tags:
+      - chat
+    put:
+      operationId: chat_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/GroupChatPatch'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/GroupChatPatch'
+      tags:
+      - chat
+    patch:
+      operationId: chat_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/GroupChatPatch'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/GroupChatPatch'
+      tags:
+      - chat
+    delete:
+      operationId: chat_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - chat
+    parameters:
+    - name: id
+      in: path
+      description: A UUID string identifying this chat.
+      required: true
+      type: string
+      format: uuid
+  /chats/:
+    get:
+      operationId: chats_list
+      description: ''
+      parameters:
+      - name: search
+        in: query
+        description: A search term.
+        required: false
+        type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+            - count
+            - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Chat'
+      tags:
+      - chats
+    post:
+      operationId: chats_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Chat'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Chat'
+      tags:
+      - chats
+    parameters: []
+  /message/{id
+}/:
+    get:
+      operationId: message_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+      tags:
+      - message
+    put:
+      operationId: message_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Message'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+      tags:
+      - message
+    patch:
+      operationId: message_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Message'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+      tags:
+      - message
+    delete:
+      operationId: message_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - message
+    parameters:
+    - name: id
+      in: path
+      description: A UUID string identifying this message.
+      required: true
+      type: string
+      format: uuid
+  /messages/:
+    get:
+      operationId: messages_list
+      description: ''
+      parameters:
+      - name: search
+        in: query
+        description: A search term.
+        required: false
+        type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+            - count
+            - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+      tags:
+      - messages
+    post:
+      operationId: messages_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/MessageCreate'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MessageCreate'
+      tags:
+      - messages
+    parameters: []
+  /register/:
+    post:
+      operationId: register_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UserCreate'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/UserCreate'
+      tags:
+      - register
+    parameters: []
+  /user/{id
+}/:
+    get:
+      operationId: user_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - user
+    put:
+      operationId: user_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - user
+    patch:
+      operationId: user_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - user
+    delete:
+      operationId: user_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - user
+    parameters:
+    - name: id
+      in: path
+      description: A UUID string identifying this user.
+      required: true
+      type: string
+      format: uuid
+  /users/:
+    get:
+      operationId: users_list
+      description: ''
+      parameters:
+      - name: search
+        in: query
+        description: A search term.
+        required: false
+        type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+            - count
+            - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/User'
+      tags:
+      - users
+    parameters: []
+definitions:
+  TokenObtainPair:
+    required:
+    - username
+    - password
+    type: object
+    properties:
+      username:
+        title: Username
+        type: string
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        minLength: 1
+  TokenRefresh:
+    required:
+    - refresh
+    type: object
+    properties:
+      refresh:
+        title: Refresh
+        type: string
+        minLength: 1
+      access:
+        title: Access
+        type: string
+        readOnly: true
+        minLength: 1
+  User:
+    required:
+    - username
+    - first_name
+    - last_name
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      username:
+        title: Username
+        description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          only.
+        type: string
+        pattern: ^[\w.@+-
+]+$
+        maxLength: 150
+        minLength: 1
+      first_name:
+        title: First name
+        type: string
+        maxLength: 150
+        minLength: 1
+      last_name:
+        title: Last name
+        type: string
+        maxLength: 150
+        minLength: 1
+      bio:
+        title: Bio
+        type: string
+        maxLength: 450
+        x-nullable: true
+      avatar:
+        title: Avatar
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
+  Chat:
+    required:
+    - members
+    - creator
+    - is_private
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      title:
+        title: Title
+        type: string
+        readOnly: true
+      members:
+        type: array
+        items:
+          $ref: '#/definitions/User'
+      creator:
+        $ref: '#/definitions/User'
+      avatar:
+        title: Avatar
+        type: string
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      is_private:
+        title: Is private
+        type: boolean
+      last_message:
+        title: Last message
+        type: string
+        readOnly: true
+  GroupChatPatch:
+    required:
+    - title
+    - members
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      title:
+        title: Title
+        type: string
+        maxLength: 150
+        minLength: 1
+      members:
+        type: array
+        items:
+          type: string
+          format: uuid
+        uniqueItems: true
+      avatar:
+        title: Avatar
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      is_private:
+        title: Is private
+        type: boolean
+        readOnly: true
+  MessageFile:
+    type: object
+    properties:
+      item:
+        title: Item
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
+  Message:
+    required:
+    - sender
+    - files
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      text:
+        title: Text
+        type: string
+        x-nullable: true
+      voice:
+        title: Voice
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
+      sender:
+        $ref: '#/definitions/User'
+      chat:
+        title: Chat
+        type: string
+        format: uuid
+        readOnly: true
+      files:
+        type: array
+        items:
+          $ref: '#/definitions/MessageFile'
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+        x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+  MessageCreate:
+    required:
+    - chat
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      text:
+        title: Text
+        type: string
+        x-nullable: true
+      voice:
+        title: Voice
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
+      chat:
+        title: Chat
+        type: string
+        format: uuid
+      files:
+        type: array
+        items:
+          $ref: '#/definitions/MessageFile'
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+        x-nullable: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+  UserCreate:
+    required:
+    - username
+    - password
+    - first_name
+    - last_name
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uuid
+        readOnly: true
+      username:
+        title: Username
+        description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+          only.
+        type: string
+        pattern: ^[\w.@+-]+$
+        maxLength: 150
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        minLength: 1
+      first_name:
+        title: First name
+        type: string
+        maxLength: 150
+        minLength: 1
+      last_name:
+        title: Last name
+        type: string
+        maxLength: 150
+        minLength: 1
+      bio:
+        title: Bio
+        type: string
+        maxLength: 450
+        x-nullable: true
+      avatar:
+        title: Avatar
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
