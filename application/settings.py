@@ -29,6 +29,13 @@ AUTH_USER_MODEL = "users.User"
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://vkedu-fullstack-div2.ru",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://localhost:9000",
+]
+
 # Application definition
 
 INSTALLED_APPS = [
