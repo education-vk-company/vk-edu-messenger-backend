@@ -26,8 +26,8 @@ def generate_subscription_token(client, channel):
     return jwt.encode(claims, CENTRIFUGO_TOKEN_HMAC_SECRET_KEY, algorithm="HS256")
 
 
-def publish_data(data, channel):
-    command = {"channel": channel, "data": data}
+def publish_data(data, channels):
+    command = {"channels": channels, "data": data}
 
     data = json.dumps(command, cls=DjangoJSONEncoder)
 
@@ -36,6 +36,8 @@ def publish_data(data, channel):
         "X-API-Key": CENTRIFUGO_API_KEY,
     }
 
+    print(data);
+
     requests.post(
-        f"http://localhost:{CENTRIFUGO_PORT}/api/publish", data=data, headers=headers
+        f"http://centrifugo:{CENTRIFUGO_PORT}/api/broadcast", data=data, headers=headers
     )
