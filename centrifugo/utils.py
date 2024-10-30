@@ -36,7 +36,7 @@ def publish_data(data, channels):
         "X-API-Key": CENTRIFUGO_API_KEY,
     }
 
-    print(data);
+    print(data)
 
     requests.post(
         f"http://centrifugo:{CENTRIFUGO_PORT}/api/broadcast", data=data, headers=headers
