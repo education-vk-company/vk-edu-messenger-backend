@@ -9,7 +9,6 @@ from .serializers import UserSerializer, UserCreateSerializer
 
 User = get_user_model()
 
-
 class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
@@ -23,6 +22,10 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         user_id = self.kwargs["id"]
+
+        if user_id == "current":
+            user_id = self.request.user.id
+
         user = generics.get_object_or_404(User, id=user_id)
         return user
 
