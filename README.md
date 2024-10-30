@@ -2,9 +2,13 @@
 
 Django Backend для курса Fullstack / 2
 
+Nginx - http://localhost:8080
+
 Django - http://localhost:8000
 
 Centrifugo - http://localhost:9000
+
+Deploy - https://vkedu-fullstack-div2.ru
 
 ## Как поднять проект?
 
@@ -102,7 +106,7 @@ body.append('bio', 'Programmer in VK')
 
 const  headers  = { 'Authorization': `Bearer ${accessToken}` };
 
-const  res  =  await  fetch(`http://localhost:8000/api/user/${id}/`, {
+const  res  =  await  fetch(`http://vkedu-fullstack-div2.ru/api/user/${id}/`, {
   method: 'PATCH',
   body,
   headers,,
@@ -135,10 +139,10 @@ const  json  =  await res.json();
 import { Centrifuge } from  'centrifuge';
 
 const  connect  =  ()  => {
-  const  centrifuge  =  new  Centrifuge('ws://localhost:9000/connection/websocket', {
+  const  centrifuge  =  new  Centrifuge('ws://vkedu-fullstack-div2.ru/connection/websocket', {
     getToken: (ctx)  =>
     new  Promise((resolve, reject)  =>
-    fetch('http://localhost:8000/api/centrifugo/connect/', {
+    fetch('https://vkedu-fullstack-div2.ru/api/centrifugo/connect/', {
     body: JSON.stringify(ctx),
     method: 'POST',
     headers: headers,
@@ -152,7 +156,7 @@ const  connect  =  ()  => {
   const  subscription  = centrifuge.newSubscription(id, {
     getToken: (ctx)  =>
     new  Promise((resolve, reject)  =>
-    fetch('http://localhost:8000/api/centrifugo/subscribe/', {
+    fetch('https://vkedu-fullstack-div2.ru/api/centrifugo/subscribe/', {
     body: JSON.stringify(ctx),
     method: 'POST',
     headers: headers,
