@@ -1,0 +1,85 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+*.log
+*.pot
+*.py[cod]
+
+# Django-specific
+*.log
+*.pot
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+static/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.venv/*
+
+# VS Code (or other IDEs)
+.vscode/
+
+# JetBrains (PyCharm, etc.)
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# pytest
+*.cover
+*.coverage
+nosetests.xml
+coverage.xml
+*.hypothesis/
+
+# mypy
+.mypy_cache/
+
+# Docker
+docker-compose.override.*
+.docker/
+*.dockerfile
+
+# Local environment settings
+*.env
+.env
+
+# Backup files
+*~
+*.bak
+*.swp
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Flask specific (if applicable)
+instance/
+.webassets-cache/
+
+# Node.js (if using Node for frontend tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore coverage directory
+.coverage/
+coverage/
+
+# Git
+.git/
+.gitignore
+.gitmodules

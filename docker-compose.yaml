@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  django:
+    container_name: django
+    build: .
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        python manage.py collectstatic --no-input &&
+        gunicorn application.wsgi:application --bind 0.0.0.0:8000
+      "
+    env_file:
+      - ./.env
+    volumes:
+      - .:/django
+      - static_value:/django/static/
+      - media_value:/django/media/
+
+  centrifugo:
+    container_name: centrifugo
+    image: centrifugo/centrifugo:v5
+    command: centrifugo --port=9000
+    env_file:
+      - ./.env
+    depends_on:
+      - django
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
+    depends_on:
+      - django
+      - centrifugo
+
+  celery:
+    container_name: celery
+    build: .
+    command: celery -A application worker -l ${CELERY_LOG_LEVEL:-INFO}
+    env_file:
+      - ./.env
+    volumes:
+      - .:/django
+    depends_on:
+      - redis
+      - django
+
+  celerybeat:
+    container_name: celerybeat
+    build: .
+    command: celery -A application beat -l ${CELERY_LOG_LEVEL:-INFO}
+    env_file:
+      - ./.env
+    volumes:
+      - .:/django
+    depends_on:
+      - redis
+      - django
+      - celery
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+
+volumes:
+  static_value:
+  media_value:
